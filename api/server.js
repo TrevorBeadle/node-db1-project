@@ -43,7 +43,7 @@ server.post("/api/accounts", (req, res) => {
         .from("accounts")
         .where("id", response)
         .first();
-      res.status(200).json(account);
+      res.status(201).json(account);
     })
     .catch(err => {
       res.status(500).json({ message: err.message });
@@ -58,6 +58,19 @@ server.put("/api/accounts/:id", (req, res) => {
     .update({ name: request.name, budget: request.budget })
     .then(response => {
       res.status(200).json({ message: "account updated" });
+    })
+    .catch(err => {
+      res.status(500).json({ message: err.message });
+    });
+});
+
+server.delete("/api/accounts/:id", (req, res) => {
+  const { id } = req.params;
+  db("accounts")
+    .where("id", id)
+    .del()
+    .then(response => {
+      res.status(200).json({ message: "account deleted" });
     })
     .catch(err => {
       res.status(500).json({ message: err.message });
